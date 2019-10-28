@@ -2,6 +2,7 @@ import React from 'react';
 import TodoList from './components/TodoComponents/TodoList';
 import TodoForm from './components/TodoComponents/TodoForm';
 import './components/TodoComponents/Todo.css'
+import { timingSafeEqual } from 'crypto';
 
 const data = [
   {
@@ -37,10 +38,6 @@ class App extends React.Component {
     this.setState({ todos: [...this.state.todos, newTodo] })
   };
 
-  filterCompleted = id => {
-    console.log(id);
-  };
-
   toggleCompleted = id => {
     console.log(id);
     this.setState({
@@ -57,12 +54,26 @@ class App extends React.Component {
     });
   };
 
+  clearCompleted = () => {
+    this.setState({
+      todos: this.state.todos.filter(todo => {
+        if (todo.completed === false) {
+          return todo;
+        }
+      })
+    });
+  };
+
   render() {
     return (
       <div className='App'>
-        <h2 className='header'>Welcome to your Todo App!</h2>
-        <TodoForm addTodo={this.addTodo} /><br />
-        <TodoList toggleCompleted={this.toggleCompleted} filterCompleted={this.filterCompleted} todos={this.state.todos} />
+        <h2 className='header'>Welcome to my Todo App!</h2>
+        <TodoForm 
+          addTodo={this.addTodo} 
+          clearCompleted={this.clearCompleted} /><br />
+        <TodoList 
+          toggleCompleted={this.toggleCompleted} 
+          todos={this.state.todos} />
       </div>
     );
   }
